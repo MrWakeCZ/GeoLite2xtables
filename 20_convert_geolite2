@@ -56,7 +56,6 @@ foreach my $line (<STDIN>){
 	my $network = $fields[0];
 	my $geoname_id = $fields[1];
 	my $registered_country_geoname_id = $fields[2];
-	my $represented_country_geoname_id = $fields[3];
 	my $is_anonymous_proxy = $fields[4];
 	my $is_satellite_provider = $fields[5];
 	my $ip = NetAddr::IP->new($network);
@@ -72,20 +71,16 @@ foreach my $line (<STDIN>){
 	}elsif ($is_satellite_provider){
 		$code = "A2";
 		$name = "Satellite Provider";
-	}elsif($countryinfo->{$represented_country_geoname_id}){
-		$code = $countryinfo->{$represented_country_geoname_id}->{'code'};
-		$name = $countryinfo->{$represented_country_geoname_id}->{'name'};
-	}elsif($countryinfo->{$registered_country_geoname_id}){
-		$code = $countryinfo->{$registered_country_geoname_id}->{'code'};
-		$name = $countryinfo->{$registered_country_geoname_id}->{'name'};
 	}elsif($countryinfo->{$geoname_id}){
 		$code = $countryinfo->{$geoname_id}->{'code'};
 		$name = $countryinfo->{$geoname_id}->{'name'};
+	}elsif($countryinfo->{$registered_country_geoname_id}){
+		$code = $countryinfo->{$registered_country_geoname_id}->{'code'};
+		$name = $countryinfo->{$registered_country_geoname_id}->{'name'};
 	}else{
 		print STDERR "Unknown Geoname ID, panicking. This is a bug.\n";
 		print STDERR "ID: $geoname_id\n";
 		print STDERR "ID Registered: $registered_country_geoname_id\n";
-		print STDERR "ID Represented $represented_country_geoname_id\n";
 		exit 1;
 	}
 
